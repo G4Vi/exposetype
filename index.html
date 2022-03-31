@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <h1>exposetype demo</h1>
+
+    <script src="exposetype.js"></script>
+    <script>
+        const Module = {
+            onRuntimeInitialized: function(e) {
+                const OBJ = {};
+                ExposeType_LoadTypes(OBJ, Module, Module._demo_et_load_type);
+                const ptr = Module._demo_get_demo_st_instance();
+                console.log('demost sizeof ' + OBJ.demo_st.sizeof);
+            }
+        };
+    </script>
+    <script src="a.out.js"></script>
+
+</html>
