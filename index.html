@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html>
     <h1>exposetype demo</h1>
+    <h2>output</h2>
+    <pre></pre>
 
     <script src="exposetype.js"></script>
+    <script src="a.out.js"></script>
     <script>
-        const Module = {
-            onRuntimeInitialized: function(e) {
-                const OBJ = {};
-                ExposeType_LoadTypes(OBJ, Module, Module._demo_et_load_type);
-                const ptr = Module._demo_get_demo_st_instance();
-                console.log('demost sizeof ' + OBJ.demo_st.sizeof);
-            }
+        const MYLOG = function(str) {
+            console.log(str);
+            document.getElementsByTagName('pre')[0].innerText += (str + "\n");
+        };
+        MYLOG("Waiting on WASM initialization ...");
+
+        Module['onRuntimeInitialized'] = function(e) {
+            // load the types and associate it with an object
+            MYLOG("Loading types ...");
+            const OBJ = {};
+            ExposeType_LoadTypes(OBJ, Module, Module._demo_et_load_type);
+            // sizeof a struct is available without an instance 
+            MYLOG('demost sizeof: ' + OBJ.demo_st.sizeof);
+            // somehow JS gets a hold of a ptr
+            const ptr = Module._demo_get_demo_st_instance();
+            // create a view into the struct
+            MYLOG("Creating demo_st view of ptr" + ptr);
+            const demo_st_instance = OBJ.demo_st.from(ptr);
+            // get the values
+            MYLOG('uint64 value: ' + demo_st_instance.get('auint64'));
+            MYLOG('teststring value: ' + Module.UTF8ToString(demo_st_instance.get('teststring')));
         };
     </script>
-    <script src="a.out.js"></script>
 
 </html>
