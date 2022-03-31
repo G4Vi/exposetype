@@ -23,10 +23,10 @@
             // somehow JS gets a hold of a ptr
             const ptr = Module._demo_get_demo_st_instance();
             // create a view into the struct
-            MYLOG("Creating demo_st view of ptr" + ptr);
+            MYLOG("Creating demo_st view of ptr " + ptr);
             const demo_st_instance = OBJ.demo_st.from(ptr);
             // get the values
-            MYLOG('uint64 value: ' + demo_st_instance.get('auint64'));
+            MYLOG('auint64 value: ' + demo_st_instance.get('auint64'));
             MYLOG('teststring value: ' + Module.UTF8ToString(demo_st_instance.get('teststring')));
         };
     </script>
